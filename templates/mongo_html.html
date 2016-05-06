@@ -181,7 +181,7 @@ svg3.selectAll("text")
    .attr("fill", "red");
 
 // load the external data
-var myjson = "http://127.0.0.1:5000/mongo/data";
+var myjson = "http://python-szhome.rhcloud.com/mongo/data";
 d3.json(myjson, function(error, coords) {
 // Summarize
 var lat_min = d3.min(coords, function(d) { return Number(d.data_lat); });

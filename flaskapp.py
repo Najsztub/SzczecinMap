@@ -3,6 +3,10 @@ import os
 from flask import Flask
 from flask import render_template
 from flask import request
+from flask import jsonify
+from flask import Response
+from flask import send_from_directory
+from bson.json_util import dumps
 import pymongo
 
 app = Flask(__name__)
@@ -13,25 +17,28 @@ app = Flask(__name__)
 def index():
     return "This is the application mynote & I'm alive"
 
-@app.route("/mongo/test", methods = ['GET', 'POST'])
-def mongo_test():
+@app.route("/mongo/data")
+def mongo_data():
     #setup the connection
     conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
     db = conn.python
     
     #query the DB for all the parkpoints
-    obsNum = db.szczecin.count()
-    obs = db.szczecin.find().limit(1)
-    outstr = ""
-    for k in obs[0]:
-        outstr += "%s,\t %s\n"%(k, obs[0][k])
-    
-    
-    info = {"num": obsNum,
-            "content": outstr
-            }
-    
-    return render_template("mongo_test.html", info = info)
+    coords = db.szczecin.find({'town':'Szczecin',
+                               'data_lat': {'$gt': 0.0 , "$lt": 54.0 },
+                               'data_lon': {'$gt': 14.0 , '$lt': 15.0 } },
+                              {'data_lat': 1, 'data_lon': 1,
+                               '_id':0 } )
+    #json_coords = [dumps(c) for c in coords]
+    return Response(
+        dumps(coords),
+        mimetype='application/json'
+    )
+
+@app.route("/mongo/html")
+def mongo_html():
+    # Just plot a html page
+    return render_template("mongo_html.html")
 
 if __name__ == "__main__":
     app.run(debug = "True")
