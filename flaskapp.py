@@ -16,10 +16,10 @@ def index():
 def mongo_test():
     #setup the connection
     conn = pymongo.Connection(os.environ['OPENSHIFT_MONGODB_DB_URL'])
-    db = conn.parks
+    db = conn.python
     
     #query the DB for all the parkpoints
-    result = db.parkpoints.find()
+    result = db.szczecin.count()
     return "There are %s data points in MongoDB base"%result
 
 if __name__ == "__main__":
