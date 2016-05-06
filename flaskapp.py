@@ -15,7 +15,7 @@ def index():
 @app.route("/mongo/test")
 def mongo_test():
     #setup the connection
-    conn = pymongo.Connection(os.environ['OPENSHIFT_MONGODB_DB_URL'])
+    conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
     db = conn.python
     
     #query the DB for all the parkpoints
