@@ -1,0 +1,16 @@
+<!--
+The extend statement tells this file inherit the general html elements from the the base.html file
+-->  
+{% extends "base.html" %}  
+{% block content %}  
+
+<h2>MongoDB test!</h2>  
+<hr>  
+<p>  
+  There are <b>{{ info.num }}</b> data points in Szczecin DB<br>  
+  First object:<br><br>  
+  {{ info.content }}  
+</p>  
+<hr>  
+  
+{% endblock %}
