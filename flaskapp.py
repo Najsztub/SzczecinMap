@@ -15,7 +15,7 @@ app = Flask(__name__)
 @app.route("/")
 @app.route("/index")
 def index():
-    return "This is the application mynote & I'm alive"
+    return "This is the application & I'm alive"
 
 @app.route("/mongo/data")
 def mongo_data():
@@ -23,12 +23,11 @@ def mongo_data():
     conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
     db = conn.python
     
-    #query the DB for all the parkpoints
+    #query the DB for all the coordinates
     coords = db.szczecin.find({'town':'Szczecin',
                                'data_lat': {'$gt': 0.0 , "$lt": 54.0 },
                                'data_lon': {'$gt': 14.0 , '$lt': 15.0 } },
-                              {'data_lat': 1, 'data_lon': 1,
-                               '_id':0 } )
+                              {'data_lat': 1, 'data_lon': 1, '_id':0})
     #json_coords = [dumps(c) for c in coords]
     return Response(
         dumps(coords),
@@ -39,6 +38,12 @@ def mongo_data():
 def mongo_html():
     # Just plot a html page
     return render_template("mongo_html.html")
+
+@app.route("/mongo/map")
+def mongo_map():
+    # Just plot a html page
+    return render_template("mongo_leaf.html")
+
 
 if __name__ == "__main__":
     app.run(debug = "True")

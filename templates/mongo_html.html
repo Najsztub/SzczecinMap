@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+    <html lang="en">
     <head>
     <style type="text/css">
     div.bar {
@@ -164,57 +164,57 @@ svg3.selectAll("circle")
     });
 
 svg3.selectAll("text")
-   .data(dataset)
-   .enter()
+    .data(dataset)
+    .enter()
     .append("text")
     .text(function(d) {
         return d[0] + "," + d[1];
     })
-.attr("x", function(d) {
+    .attr("x", function(d) {
         return d[0];
-   })
-   .attr("y", function(d) {
+    })
+    .attr("y", function(d) {
         return d[1];
-   })
-.attr("font-family", "sans-serif")
-   .attr("font-size", "11px")
-   .attr("fill", "red");
+    })
+    .attr("font-family", "sans-serif")
+    .attr("font-size", "11px")
+    .attr("fill", "red");
 
 // load the external data
 var myjson = "http://python-szhome.rhcloud.com/mongo/data";
 d3.json(myjson, function(error, coords) {
-// Summarize
-var lat_min = d3.min(coords, function(d) { return Number(d.data_lat); });
-var lat_max = d3.max(coords, function(d) { return Number(d.data_lat); });
-var delta_lat = lat_max - lat_min
-
-var lon_min = d3.min(coords, function(d) { return Number(d.data_lon); });
-var lon_max = d3.max(coords, function(d) { return Number(d.data_lon); });
-var delta_lon = lon_max - lon_min
-console.log(lat_min, lat_max);
-console.log(lon_min, lon_max);
-//Create SVG element
-//Width and height
-var w = 500;
-var h = 500;
-var svg4 = d3.select("body")
-            .append("svg")
-            .attr("width", w)
-    .attr("height", h);
-
-svg4.selectAll("circle")
-   .data(coords)
-   .enter()
-    .append("circle")
-    .attr("cx", function(d) {
-        return w * (d.data_lon-lon_min)/delta_lon;
-    })
-    .attr("cy", function(d) {
-	return h - h * (d.data_lat-lat_min)/delta_lat;
-    })
-    .attr("r", function(d) {
-	return Math.sqrt(10);
-    });
+    // Summarize
+    var lat_min = d3.min(coords, function(d) { return Number(d.data_lat); });
+    var lat_max = d3.max(coords, function(d) { return Number(d.data_lat); });
+    var delta_lat = lat_max - lat_min
+    
+    var lon_min = d3.min(coords, function(d) { return Number(d.data_lon); });
+    var lon_max = d3.max(coords, function(d) { return Number(d.data_lon); });
+    var delta_lon = lon_max - lon_min
+    console.log(lat_min, lat_max);
+    console.log(lon_min, lon_max);
+    //Create SVG element
+    //Width and height
+    var w = 500;
+    var h = 500;
+    var svg4 = d3.select("body")
+        .append("svg")
+        .attr("width", w)
+	.attr("height", h);
+    
+    svg4.selectAll("circle")
+	.data(coords)
+	.enter()
+	.append("circle")
+	.attr("cx", function(d) {
+            return w * (d.data_lon-lon_min)/delta_lon;
+	})
+	.attr("cy", function(d) {
+	    return h - h * (d.data_lat-lat_min)/delta_lat;
+	})
+	.attr("r", function(d) {
+	    return Math.sqrt(10);
+	});
 });
 
 </script>
