@@ -11,7 +11,7 @@ from bson.json_util import dumps
 import pymongo
 
 app = Flask(__name__)
-Compress(app)
+#Compress(app)
 
 #Create our index or root / route
 @app.route("/")
