@@ -18,12 +18,12 @@
 	     fill: #20FF20;
 	     stroke: #000;
 	     stroke-width: .5px;
-	     opacity: .7;
+	     opacity: .6;
 	 }
 	 #mapid { height: 600px; width: 600px;}
 	 #tooltip {
              opacity: .9;
-             background: #333;
+             background: #CCC;
              padding: 5px;
              border: 1px solid lightgrey;
              border-radius: 5px;
@@ -45,7 +45,7 @@
     <body>
 	<div id="mapid"></div>
 	<div id="tooltip">
-	    <svg width="100px" height="100px"></svg>
+	    <svg width="200px" height="100px"></svg>
 	</div>
 	<script type="text/javascript">
 	 // Nearly all code from here:  http://www.delimited.io/blog/2013/12/1/hexbins-with-d3-and-leaflet-maps
@@ -105,22 +105,22 @@
 		 var path = hexagons.enter().append("path").attr("class", "hexagon");
 		 this.config.style.call(this, path);
 
-		 var color = d3.scale.linear()
-			       .domain([0, 150, 300])
-			       .range(["blue", "yellow", "red"])
-			       .interpolate(d3.interpolateLab);
+		 
 
 		 that = this;
 		 hexagons
 		     .attr("d", function(d) { return that.layout.hexagon(that.rscale(d.length)); })
 		     .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
-		     .style("fill", function(d) { return color(d.length); })
 		     .on("mouseover", function (d) { 
-			 var s=0, k=0;
+			 var pr=0, ar=0, pr_sq=0;
 			 d.map(function(e){
-			     if (e.length === 3) e[2].group === 1 ? ++k : ++s;
+			     if (e.length === 3) {
+				 pr += e[2].price;
+				 ar += e[2].area;
+				 pr_sq += e[2].price_sq;
+			     }
 			 });
-			 that.config.mouse.call(this, [s,k]);
+			 that.config.mouse.call(this, [d.length, pr/d.length, ar/d.length, pr_sq/d.length]);
 			 d3.select("#tooltip")
 			   .style("visibility", "visible")
 			   .style("top", function () { return (d3.event.pageY - 130)+"px"})
@@ -162,41 +162,6 @@
 	 // load the external data
 	 var myjson = "data";
 	 d3.json(myjson, function(error, coords) {
-
-	     var projection = d3.geo.mercator()
-				.scale(70000)
-				.rotate([-53.45, -14.57])
-				.translate([w / 2, h / 2])
-				.precision(.1);
-
-	     console.log(projection([0,0]));
-	     console.log(projection([53.4,14.55]));
-	     // Summarize
-	     var lat_min = d3.min(coords, function(d) {
-		 return Number(d.data_lat);
-	     });
-	     var lat_max = d3.max(coords, function(d) {
-		 return Number(d.data_lat);
-	     });
-	     var delta_lat = lat_max - lat_min
-	     
-	     var lon_min = d3.min(coords, function(d) {
-		 return Number(d.data_lon);
-	     });
-	     var lon_max = d3.max(coords, function(d) {
-		 return Number(d.data_lon);
-	     });
-	     var delta_lon = lon_max - lon_min
-	     console.log(lat_min, lat_max);
-	     console.log(lon_min, lon_max);
-
-	     var dd = [];
-	     coords.forEach(function(d) {
-		 var p =projection([d.data_lat, d.data_lon]);
-		 // console.log(p);
-		 dd.push([h-p[0], w-p[1]]);
-	     }
-	     );
 	     //console.log(dd);
 	     //Create SVG element
 
@@ -213,10 +178,9 @@
 		 array.map(function (d){
 		     data.push({
 			 properties: {
-			     group: "dd",
-			     city: "dd",
-			     state: "dd",
-			     store: "dd"
+			     price: d.price,
+			     area: d.pow,
+			     price_sq: d.price/d.pow
 			 }, 
 			 type: "Feature", 
 			 geometry: {
@@ -234,25 +198,61 @@
 	     
 	     var hexLayer = L.hexbinLayer(geoData, { 
 		 style: hexbinStyle,
-		 mouse: makePie
-             }).addTo(mymap);
-
+		 mouse: makeInfo,
+             })
+	     // Change scale
+	     hexLayer.rscale = d3.scale.sqrt().range([10, 10]).clamp(true);
+	     //hexLayer.rscale = function () {return ;
+	     hexLayer.addTo(mymap);
+	     	     
 	     function hexbinStyle(hexagons) {
+		 var color = d3.scale.linear()
+			       .domain([3000, 4000, 7000])
+			       .range(["blue", "yellow", "red"])
+			       .interpolate(d3.interpolateLab);
+		 var meanDat = function(d, key){
+		     var res = 0
+		     for(i = 0; i< d.length; i++){
+			 res += d[i][2][key];
+		     }
+		     return res/d.length;
+		 };
 		 hexagons
 		     .attr("stroke", "black")
-		     .attr("fill", function (d) {
-			 var values = d.map(function (elem) {
-			     return elem[2].group;
-			 })
-			 var avg = d3.mean(d, function(d) { return +d[2].group; })
-			 return cscale(avg);
-		     });
+		     .style("fill", function(d) {
+			 //console.log(d3.mean(d.price_sq));
+			 //console.log(d);
+			 //return color(d.length); });
+			 return color(meanDat(d, 'price_sq')); });
 	     };
 	     //**********************************************************************************
              //********  PIE CHART ROLL-OVER ****************************************************
              //**********************************************************************************
-             function makePie (data) {
 
+	     function makeInfo (data) {
+		 d3.select("#tooltip").selectAll(".arc").remove()
+		 d3.select("#tooltip").selectAll(".pie").remove()
+
+		 var names = ['N: ', 'cena: ', 'pow: ', 'PLN/m2: '];
+		 var svg = d3.select("#tooltip").select("svg")
+			     .append("g")
+                             .attr("class", "pie")
+                             .attr("transform", "translate(10,20)");
+
+		 var g = svg.selectAll(".arc")
+			    .data(data)
+			    .enter().append("g")
+			    .attr("class", "arc");
+		 
+		 g.append("text")
+                  .style("text-anchor", "left")
+                  .text(function (d, i) {
+		      return d.value === 0 ? "" : names[i]+d.toFixed(2); })
+		  .attr("transform", function(d, i){return "translate(0," + i * 18 + ")";} );
+             }
+	     
+	     // Original function
+             function makePie (data) {
 		 d3.select("#tooltip").selectAll(".arc").remove()
 		 d3.select("#tooltip").selectAll(".pie").remove()
 
@@ -272,7 +272,7 @@
 			    .data(pie(data))
 			    .enter().append("g")
 			    .attr("class", "arc");
-
+		 //console.log(data);
 		 g.append("path")
                   .attr("d", arc)
                   .style("fill", function(d, i) { return i === 1 ? 'orange':'green'; });
@@ -280,7 +280,9 @@
 		 g.append("text")
                   .attr("transform", function(d) { return "translate(" + arc.centroid(d) + ")"; })
                   .style("text-anchor", "middle")
-                  .text(function (d) { return d.value === 0 ? "" : d.value; });
+                  .text(function (d) {
+		      console.log(d)
+		      return d.value === 0 ? "" : "N: "+d.value; });
              }
 
 	     //*************************************************************** 

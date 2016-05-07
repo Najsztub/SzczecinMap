@@ -6,5 +6,5 @@ setup(name='SzczecinHousingMap',
       author='Mateusz Najsztub',
       author_email='mateusz.najsztub@gmail.com',
       url='http://www.python.org/sigs/distutils-sig/',
-      install_requires=['Flask', 'pymongo'],
+      install_requires=['Flask', 'pymongo', 'flask-compress'],
      )
