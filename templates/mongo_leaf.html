@@ -15,11 +15,22 @@
 	 }
 
 	 .hexagon {
-	     fill: none;
+	     fill: #20FF20;
 	     stroke: #000;
 	     stroke-width: .5px;
 	 }
 	 #mapid { height: 600px; width: 600px;}
+	 #tooltip {
+             opacity: .9;
+             background: #333;
+             padding: 5px;
+             border: 1px solid lightgrey;
+             border-radius: 5px;
+             position: absolute;
+             z-index: 10;
+             visibility: hidden;
+             pointer-events: none;
+	 }
 
 	</style>
         <meta charset="utf-8">
@@ -211,7 +222,8 @@
 	     //********  ADD HEXBIN LAYER TO MAP AND DEFINE HEXBIN STYLE FUNCTION ***************
 	     //**********************************************************************************
 	     var hexLayer = L.hexbinLayer(geoData, { 
-		 style: hexbinStyle
+		 style: hexbinStyle,
+		 mouse: makePie
              }).addTo(mymap);
 
 	     function hexbinStyle(hexagons) {
@@ -225,7 +237,42 @@
 			 return cscale(avg);
 		     });
 	     };
-	    //*************************************************************** 
+	     //**********************************************************************************
+             //********  PIE CHART ROLL-OVER ****************************************************
+             //**********************************************************************************
+             function makePie (data) {
+
+		 d3.select("#tooltip").selectAll(".arc").remove()
+		 d3.select("#tooltip").selectAll(".pie").remove()
+
+		 var arc = d3.svg.arc()
+			     .outerRadius(45)
+			     .innerRadius(10);
+
+		 var pie = d3.layout.pie()
+			     .value(function(d) { return d; });
+
+		 var svg = d3.select("#tooltip").select("svg")
+			     .append("g")
+                             .attr("class", "pie")
+                             .attr("transform", "translate(50,50)");
+
+		 var g = svg.selectAll(".arc")
+			    .data(pie(data))
+			    .enter().append("g")
+			    .attr("class", "arc");
+
+		 g.append("path")
+                  .attr("d", arc)
+                  .style("fill", function(d, i) { return i === 1 ? 'orange':'green'; });
+
+		 g.append("text")
+                  .attr("transform", function(d) { return "translate(" + arc.centroid(d) + ")"; })
+                  .style("text-anchor", "middle")
+                  .text(function (d) { return d.value === 0 ? "" : d.value; });
+             }
+
+	     //*************************************************************** 
 	     /*
 		var svg = d3.select("body")
 		.append("svg")
