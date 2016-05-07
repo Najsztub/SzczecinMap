@@ -27,7 +27,8 @@ def mongo_data():
     coords = db.szczecin.find({'town':'Szczecin',
                                'data_lat': {'$gt': 0.0 , "$lt": 54.0 },
                                'data_lon': {'$gt': 14.0 , '$lt': 15.0 } },
-                              {'data_lat': 1, 'data_lon': 1, '_id':0})
+                              {'data_lat': 1, 'data_lon': 1,
+                               'price':1, 'pow':1, '_id':1})
     #json_coords = [dumps(c) for c in coords]
     return Response(
         dumps(coords),
