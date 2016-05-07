@@ -6,12 +6,12 @@ from flask import request
 from flask import jsonify
 from flask import Response
 from flask import send_from_directory
-from flask.ext.compress import Compress
+#from flask.ext.compress import Compress
 from bson.json_util import dumps
 import pymongo
 
 app = Flask(__name__)
-Compress(app)
+#Compress(app)
 
 #Create our index or root / route
 @app.route("/")
