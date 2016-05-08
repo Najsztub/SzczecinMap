@@ -20,8 +20,8 @@
 	     stroke-width: .5px;
 	     opacity: .6;
 	 }
-	 #mapid { height: 600px; width: 600px;}
-	 #tooltip {
+	 #mapid { height: 600px; width: 800px;}
+	 #tooltip, #tooltip-text {
              opacity: .9;
              background: #CCC;
              padding: 5px;
@@ -34,20 +34,13 @@
 	 }
 
 	 #tooltip-text {
-             opacity: .9;
-             background: #CCC;
-             padding: 5px;
-             border: 1px solid lightgrey;
-             border-radius: 5px;
-             position: absolute;
-             z-index: 10;
-             visibility: hidden;
              pointer-events: visible;
 	 }
 
 	</style>
         <meta charset="utf-8">
         <title>Map Test</title>
+	<link rel="shortcut icon" href="{{ url_for('static', filename='flask.ico') }}">
 	<link rel="stylesheet" href="{{ url_for('static', filename='leaflet.css') }}" />
 	<script type="text/javascript" src="{{ url_for('static', filename='d3.v3.js') }}" charset="utf-8"></script>
 	<script type="text/javascript" src="{{ url_for('static', filename='d3.hexbin.min.js') }}" charset="utf-8"></script>
@@ -222,7 +215,7 @@
 	     hexLayer.addTo(mymap);
 
 	     function hexClicked (d){
-
+		 // TODO Change tooltip text from SVG to simple HTML
 		 function clickTooltip(data) {
 		     d3.select("#tooltip").style("visibility", "hidden");
 		     d3.select("#tooltip-text").selectAll(".arc").remove()
@@ -319,6 +312,7 @@
              //**********************************************************************************
 
 	     function makeInfo (data) {
+		 // TODO Change info from SVG to simple HTML
 		 d3.select("#tooltip").selectAll(".arc").remove()
 		 d3.select("#tooltip").selectAll(".pie").remove()
 		 var names = ['N: ', 'cena: ', 'pow: ', 'PLN/m2: '];
