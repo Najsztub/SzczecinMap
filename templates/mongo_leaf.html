@@ -265,9 +265,10 @@
 		 d.map(function(e){
 		     q.push(e[2]._id);
 		 });
-		 // Only first 20 items
-		 if (q.length > 20){
-		     q = q.slice(0,20);
+		 // Only couple first attempts
+		 var maxAt = 9;
+		 if (q.length > maxAt ){
+		     q = q.slice(0, maxAt);
 		 }
 
 		 $.ajax({

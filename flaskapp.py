@@ -56,7 +56,7 @@ def add_message():
     conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
     db = conn.python
     
-    items = db.szczecin.find({'_id':{'$in': qu }})
+    items = db.szczecin.find({'_id':{'$in': qu }}).limit(50)
     return Response(dumps(items), mimetype='application/json')
 
 
