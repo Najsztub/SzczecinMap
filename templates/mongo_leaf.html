@@ -116,8 +116,10 @@
 		 
 
 		 that = this;
+		 // that.rscale(d.length) <- goes into layout.hexagon() to scale
+		 // hexagons according to size
 		 hexagons
-		     .attr("d", function(d) { return that.layout.hexagon(that.rscale(d.length)); })
+		     .attr("d", function(d) { return that.layout.hexagon(); })
 		     .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
 		     .on("mouseover", function (d) { 
 			 var pr=0, ar=0, pr_sq=0;
