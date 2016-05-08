@@ -45,7 +45,7 @@ def mongo_html():
 @app.route('/mongo/item', methods=['GET', 'POST'])
 def add_message():
     content = request.json
-    print content
+    #print content
 
     # Construct MongoDB query
     try:
