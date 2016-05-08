@@ -33,6 +33,18 @@
              pointer-events: none;
 	 }
 
+	 #tooltip-text {
+             opacity: .9;
+             background: #CCC;
+             padding: 5px;
+             border: 1px solid lightgrey;
+             border-radius: 5px;
+             position: absolute;
+             z-index: 10;
+             visibility: hidden;
+             pointer-events: visible;
+	 }
+
 	</style>
         <meta charset="utf-8">
         <title>Map Test</title>
@@ -46,6 +58,9 @@
 	<div id="mapid"></div>
 	<div id="tooltip">
 	    <svg width="200px" height="100px"></svg>
+	</div>
+	<div id="tooltip-text">
+	    <svg width="300px" height="100px"></svg>
 	</div>
 	<script type="text/javascript">
 	 // Nearly all code from here:  http://www.delimited.io/blog/2013/12/1/hexbins-with-d3-and-leaflet-maps
@@ -172,12 +187,13 @@
 		 attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
 		 maxZoom: 18
 	     }).addTo(mymap);
-
+	     
 	     function reformat (array) {
 		 var data = [];
 		 array.map(function (d){
 		     data.push({
 			 properties: {
+			     _id: d._id,
 			     price: d.price,
 			     area: d.pow,
 			     price_sq: d.price/d.pow
@@ -204,8 +220,71 @@
 	     hexLayer.rscale = d3.scale.sqrt().range([10, 10]).clamp(true);
 	     //hexLayer.rscale = function () {return ;
 	     hexLayer.addTo(mymap);
-	     	     
+
+	     function hexClicked (d){
+
+		 function clickTooltip(data) {
+		     d3.select("#tooltip").style("visibility", "hidden");
+		     d3.select("#tooltip-text").selectAll(".arc").remove()
+		     d3.select("#tooltip-text").selectAll(".pie").remove()
+		     d3.select("#tooltip-text")
+		       .style("visibility", "visible")
+		       .style("top", function () { return (d3.event.pageY - 130)+"px"})
+		       .style("left", function () { return (d3.event.pageX - 130)+"px";});
+
+		     
+		     
+		     var svg = d3.select("#tooltip-text")
+				 .select("svg")
+				 .append("g")
+				 .attr("class", "pie")
+				 .attr("transform", "translate(10,20)");
+
+		     var g = svg.selectAll(".arc")
+				.data(data)
+				.enter().append("g")
+				.attr("class", "arc");
+		     
+		     g.append("svg:a").attr("xlink:href", function(d){ return  d.url }).attr("xlink:show","new")
+		      .append("svg:text")
+                      .style("text-anchor", "left")
+                      .text(function (d, i) {
+			  return d.value === 0 ? "" : d.description[0]; })
+		      .attr("transform", function(d, i){return "translate(0," + i * 10 + ")";} )
+		      .attr("font-family", "sans-serif")
+		      .attr("font-size", "11px");
+
+		     d3.select("#tooltip-text").select("svg")
+		       .on("mouseleave", function (d) { d3.select("#tooltip-text").style("visibility", "hidden") });
+		     
+		     //console.log(data);
+		 };
+		 
+		 console.log("clicked! There are "+d.length+" items");
+		 var q = [];
+		 d.map(function(e){
+		     q.push(e[2]._id);
+		 });
+		 // Only first 20 items
+		 if (q.length > 20){
+		     q = q.slice(0,20);
+		 }
+
+		 $.ajax({
+		     url: 'item',
+		     type: 'POST',
+		     data: JSON.stringify(q),
+		     contentType: 'application/json; charset=utf-8',
+		     dataType: 'json',
+		     async: false,
+		     success: function(msg) {
+			 clickTooltip(msg);
+		     }
+		 });
+	     };
+	     
 	     function hexbinStyle(hexagons) {
+		
 		 var color = d3.scale.linear()
 			       .domain([3000, 4000, 7000])
 			       .range(["blue", "yellow", "red"])
@@ -223,8 +302,17 @@
 			 //console.log(d3.mean(d.price_sq));
 			 //console.log(d);
 			 //return color(d.length); });
-			 return color(meanDat(d, 'price_sq')); });
+			 return color(meanDat(d, 'price_sq')); })
+		     .on("click", function(d) {
+			 if (d3.event.defaultPrevented) return; // click suppressed
+			 hexClicked(d);
+		     });
 	     };
+	     //****************************************
+	     // On click
+	     //****************************************
+	     //function getData(
+	     
 	     //**********************************************************************************
              //********  PIE CHART ROLL-OVER ****************************************************
              //**********************************************************************************
@@ -232,8 +320,8 @@
 	     function makeInfo (data) {
 		 d3.select("#tooltip").selectAll(".arc").remove()
 		 d3.select("#tooltip").selectAll(".pie").remove()
-
 		 var names = ['N: ', 'cena: ', 'pow: ', 'PLN/m2: '];
+		 
 		 var svg = d3.select("#tooltip").select("svg")
 			     .append("g")
                              .attr("class", "pie")
@@ -284,97 +372,6 @@
 		      console.log(d)
 		      return d.value === 0 ? "" : "N: "+d.value; });
              }
-
-	     //*************************************************************** 
-	     /*
-		var svg = d3.select("body")
-		.append("svg")
-		.attr("width", w)
-		.attr("height", h);
-	      */
-	    /* var color = d3.scale.linear()
-			   .domain([0, 20])
-			   .range(["white", "steelblue"])
-			   .interpolate(d3.interpolateLab);
-
-	     var hexbin = d3.hexbin()
-			    .size([w, h])
-			    .radius(5);
-	     
-	     var y = d3.scale.linear()
-		       .domain([53.4, 53.6])
-		       .range([0, w]);
-
-	     var x = d3.scale.linear()
-		       .domain([14.4, 14.7])
-		       .range([0, h]);
-
-	     var xAxis = d3.svg.axis()
-			   .scale(x)
-			   .orient("bottom")
-			   .tickSize(6, -h);
-
-	     var yAxis = d3.svg.axis()
-			   .scale(y)
-			   .orient("left")
-			   .tickSize(6, -w);
-	     
-	     var svg = d3.select("body").append("svg")
-			 .attr("width", w + margin.left + margin.right)
-			 .attr("height", h + margin.top + margin.bottom)
-			 .append("g")
-			 .attr("transform", function(d) {
-			     //console.log("translate(" + margin.left + "," + margin.top + ")");
-			     return "translate(" + margin.left + "," + margin.top + ")";
-			 });
-
-	     svg.append("clipPath")
-		.attr("id", "clip")
-		.append("rect")
-		.attr("class", "mesh")
-		.attr("width", w)
-		.attr("height", h);
-
-	     var radius = d3.scale.sqrt()
-			    .domain([0, 12])
-			    .range([0, 8]);
-	     
-	     svg.append("g")
-		.attr("clip-path", "url(#clip)")
-		.selectAll(".hexagon")
-		.data(hexbin(dd))
-		.enter().append("path")
-		.attr("class", "hexagon")
-		.attr("d", hexbin.hexagon())
-		.attr("transform", function(d) {
-		    //console.log("translate(" + d.y + "," + d.x + ")");
-		    return "translate(" + d.y + "," + d.x + ")"; })
-		.style("fill", function(d) { return color(d.length); });
-
-	     svg.append("g")
-		.attr("class", "y axis")
-		.call(yAxis);
-
-	     svg.append("g")
-		.attr("class", "x axis")
-		.attr("transform", "translate(0," + h + ")")
-		.call(xAxis);
-	     */
-	     
-	     /*
-		svg.selectAll("circle")
-		.data(coords)
-		.enter()
-		.append("circle")
-		.attr("cx", function(d) {
-		return w * (d.data_lon-lon_min)/delta_lon;
-		})
-		.attr("cy", function(d) {
-		return h - h * (d.data_lat-lat_min)/delta_lat;
-		})
-		.attr("r", function(d) {
-		return Math.sqrt(10);
-		});*/
 	 });
 	 
 	</script>

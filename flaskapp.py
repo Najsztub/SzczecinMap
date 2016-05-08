@@ -7,7 +7,7 @@ from flask import jsonify
 from flask import Response
 from flask import send_from_directory
 from flask.ext.compress import Compress
-from bson.json_util import dumps
+from bson.json_util import dumps, ObjectId
 import pymongo
 
 app = Flask(__name__)
@@ -41,6 +41,24 @@ def mongo_data():
 def mongo_html():
     # Just plot a html page
     return render_template("mongo_html.html")
+
+@app.route('/mongo/item', methods=['GET', 'POST'])
+def add_message():
+    content = request.json
+    print content
+
+    # Construct MongoDB query
+    try:
+        qu = [ObjectId(q['$oid']) for q in content]
+    except TypeError:
+        return "Error, none or invalid query given", 500
+    #setup the connection
+    conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
+    db = conn.python
+    
+    items = db.szczecin.find({'_id':{'$in': qu }})
+    return Response(dumps(items), mimetype='application/json')
+
 
 @app.route("/mongo/map")
 def mongo_map():
