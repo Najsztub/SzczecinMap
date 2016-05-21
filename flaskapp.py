@@ -1,14 +1,10 @@
 # -*- coding: utf-8 -*-
 import os
-from flask import Flask
-from flask import render_template
-from flask import request
-from flask import jsonify
-from flask import Response
-from flask import send_from_directory
-from flask.ext.compress import Compress
-from bson.json_util import dumps, ObjectId
+
 import pymongo
+from bson.json_util import dumps, ObjectId
+from flask import Flask, render_template, request, Response
+
 
 app = Flask(__name__)
 #Compress(app)
@@ -49,13 +45,13 @@ def add_message():
 
     # Construct MongoDB query
     try:
-        qu = [ObjectId(q['$oid']) for q in content]
+        qu = [ObjectId(el['$oid']) for el in content]
     except TypeError:
-        return "Error, none or invalid query given", 500
+        return "Error; none or invalid query given", 500
     #setup the connection
     conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
     db = conn.python
-    
+
     items = db.szczecin.find({'_id':{'$in': qu }}).limit(50)
     return Response(dumps(items), mimetype='application/json')
 
