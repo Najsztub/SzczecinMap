@@ -65,7 +65,7 @@
             <svg width="200px" height="100px"></svg>
         </div>
         <div id="tooltip-text">
-            <svg width="300px" height="100px"></svg>
+            <svg width="300px" height="120px"></svg>
         </div>
         <p>
             Mapa powstała na podstawie ponad 8k ofert dla Szczecina pobranych z <a href="http://otodom.pl">otodom.pl</a> przy pomocy <a href="http://scrapy.readthedocs.io/en/latest/">Scrapy</a>. Kod do zaciągania danych i prostej analizy dostępny na <a href="https://github.com/Najsztub/SzczecinHome">GitHubie</a>.
@@ -256,7 +256,7 @@
 	               .style("top", function() {
 	                   return (d3.event.pageY - 130) + "px";
 	               })
-		       .style("left", function() { return (d3.event.pageX - 130)+"px";});
+		       .style("left", function() { return (d3.event.pageX - 150)+"px";});
 
 	             var svg = d3.select("#tooltip-text")
 		                 .select("svg")
@@ -291,7 +291,7 @@
 	             q.push(e[2]._id);
 	         });
 	         // Only couple first attempts
-	         var maxAt = 9;
+	         var maxAt = 10;
 	         if (q.length > maxAt ){
 	             q = q.slice(0, maxAt);
 	         }
