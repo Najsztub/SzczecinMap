@@ -12,8 +12,9 @@ Compress(app)
 #Create our index or root / route
 @app.route("/")
 @app.route("/index")
-def index():
-    return "This is the application & I'm alive"
+def mongo_map():
+    # Just plot a html page
+    return render_template("mongo_leaf.html")
 
 @app.route("/mongo/data")
 def mongo_data():
@@ -59,12 +60,5 @@ def add_message():
     items = db.szczecin.find({'_id':{'$in': qu }}).limit(50)
     return Response(dumps(items), mimetype='application/json')
 
-
-@app.route("/mongo/map")
-def mongo_map():
-    # Just plot a html page
-    return render_template("mongo_leaf.html")
-
-
 if __name__ == "__main__":
-    app.run(debug = "True")
+    app.run(debug = "False")
