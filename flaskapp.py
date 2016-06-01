@@ -4,10 +4,10 @@ import os
 import pymongo
 from bson.json_util import dumps, ObjectId
 from flask import Flask, render_template, request, Response
-
+from flask.ext.compress import Compress
 
 app = Flask(__name__)
-#Compress(app)
+Compress(app)
 
 #Create our index or root / route
 @app.route("/")
@@ -17,8 +17,9 @@ def index():
 
 @app.route("/mongo/data")
 def mongo_data():
-    #setup the connection
-    conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
+    #setup the connection os.environ['OPENSHIFT_MONGODB_DB_URL'])
+    key = "mongodb://localhost:27017/test"
+    conn = pymongo.MongoClient(key)
     db = conn.python
     
     #query the DB for all the coordinates
@@ -49,7 +50,10 @@ def add_message():
     except TypeError:
         return "Error; none or invalid query given", 500
     #setup the connection
-    conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
+    key = "mongodb://localhost:27017/test"
+    conn = pymongo.MongoClient(key)
+
+    #conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
     db = conn.python
 
     items = db.szczecin.find({'_id':{'$in': qu }}).limit(50)
