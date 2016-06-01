@@ -19,7 +19,8 @@ def mongo_map():
 @app.route("/mongo/data")
 def mongo_data():
     #setup the connection os.environ['OPENSHIFT_MONGODB_DB_URL'])
-    key = "mongodb://localhost:27017/test"
+    #key = "mongodb://localhost:27017/test"
+    key = os.environ['OPENSHIFT_MONGODB_DB_URL']
     conn = pymongo.MongoClient(key)
     db = conn.python
     
@@ -51,7 +52,7 @@ def add_message():
     except TypeError:
         return "Error; none or invalid query given", 500
     #setup the connection
-    key = "mongodb://localhost:27017/test"
+    key = os.environ['OPENSHIFT_MONGODB_DB_URL']
     conn = pymongo.MongoClient(key)
 
     #conn = pymongo.MongoClient(os.environ['OPENSHIFT_MONGODB_DB_URL'])
