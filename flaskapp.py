@@ -4,7 +4,7 @@ import os
 import pymongo
 from bson.json_util import dumps, ObjectId
 from flask import Flask, render_template, request, Response
-from flask.ext.compress import Compress
+from flask_compress import Compress
 
 app = Flask(__name__)
 Compress(app)
