@@ -102,9 +102,8 @@ except:
     syslog.syslog("ScrapingHub: MongoDB flush fail!")
     sys.exit(1)
 # Populate the new DB
-try:
-    syslog.syslog("ScrapingHub: Populate MongdDB with new data")
-    os.system("mongoimport -d python -c szczecin --type json %s" % file_name)
-except:
-    syslog.syslog("ScrapingHub: Populationg MongoDB filed")
+syslog.syslog("ScrapingHub: Populate MongdDB with new data")
+pop = os.system("mongoimport -d python -c szczecin --type json %s" % file_name)
+if pop != 0:
+    syslog.syslog("ScrapingHub: Populationg MongoDB failed")
     sys.exit(1)
