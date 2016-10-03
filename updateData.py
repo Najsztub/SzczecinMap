@@ -10,6 +10,7 @@ API key: c2cbde9622bc42629dee9ddba6ecd3fe
 
 
 import sys
+import os
 import codecs
 import time
 import requests
@@ -85,3 +86,25 @@ except:
     syslog.syslog("ScrapingHub: file writing failed")
     
 # Drop old data and import new to MongoDB
+import pymongo
+
+#setup the connection os.environ['OPENSHIFT_MONGODB_DB_URL'])
+try:
+    syslog.syslog("ScrapingHub: Flushing MongoDB data for Szczecin")
+    key = "mongodb://localhost:27017/test"
+    conn = pymongo.MongoClient(key)
+    db = conn.python
+
+    # Drop the DB
+    db.szczecin.drop()
+    conn.close()
+except:
+    syslog.syslog("ScrapingHub: MongoDB flush fail!")
+    sys.exit(1)
+# Populate the new DB
+try:
+    syslog.syslog("ScrapingHub: Populate MongdDB with new data")
+    os.system("mongoimport -d python -c szczecin --type json /home/mateusz/data/%s" % file_name)
+except:
+    syslog.syslog("ScrapingHub: Populationg MongoDB filed")
+    sys.exit(1)
