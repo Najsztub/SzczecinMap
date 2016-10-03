@@ -4,11 +4,8 @@ MN: 03/10/16
 
 Automation of database update.
 Data taken from ScrapingHub
-API key: c2cbde9622bc42629dee9ddba6ecd3fe
+API key: xxxx
 '''
-# curl -u c2cbde9622bc42629dee9ddba6ecd3fe: https://storage.scrapinghub.com/activity/50402/?count=3
-
-
 import sys
 import os
 import codecs
@@ -16,7 +13,7 @@ import time
 import requests
 import syslog
 
-API_key = 'c2cbde9622bc42629dee9ddba6ecd3fe'
+API_key = os.environ['SCH_API']
 PRJ = "50402"
 
 url_jobs = 'https://app.scrapinghub.com/api/jobs/list.json'
