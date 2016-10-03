@@ -10,19 +10,21 @@ API key: c2cbde9622bc42629dee9ddba6ecd3fe
 
 
 import sys
+import codecs
 import time
 import requests
+import syslog
 
 API_key = 'c2cbde9622bc42629dee9ddba6ecd3fe'
 PRJ = "50402"
-URL = 'https://storage.scrapinghub.com/activity/%s/?count=3' % PRJ
 
-r = requests.get(URL, auth=(API_key, ''))
+url_jobs = 'https://app.scrapinghub.com/api/jobs/list.json'
+url_data = 'https://storage.scrapinghub.com/items/'
 
 # TODO: Get the most recent job number
 
 
-def getSpider(url, api, **options):
+def getSpider(url, api, header='', **options):
     req = ''
     for idx, op in enumerate(options):
         if idx == 0:
@@ -31,13 +33,16 @@ def getSpider(url, api, **options):
             req += '&' + op + '=' + str(options[op])
     resp = requests.get(url + req, auth=(api, ''))
     return resp
-
+#
 # Get 5 most recent jobs
-url_jobs = 'https://app.scrapinghub.com/api/jobs/list.json'
+#
+syslog.syslog("ScrapingHub: starting...")
+syslog.syslog("ScrapingHub: Getting jobs info")
 try:
     res_jobs = getSpider(url_jobs, API_key, project=PRJ, state='finished',
                          count=5)
 except requests.HTTPError, ConnectionError:
+    syslog.syslog("ScrapingHub: Connection error for jobs info")
     print "Connection Error!"
     sys.exit(1)
 json_job = res_jobs.json()
@@ -57,5 +62,26 @@ for idx, j in enumerate(json_job['jobs']):
         max_time = job_end
         max_time_id = idx
 last_job = json_job['jobs'][max_time_id]
+last_job_id = str(last_job['id'])
 
-
+# Download data for last job
+syslog.syslog("ScrapingHub: downloading data for job %s" % last_job_id)
+try:
+    spider_data = getSpider(url_data + last_job_id, API_key, format='jl')
+except requests.HTTPError, ConnectionError:
+    syslog.syslog("ScrapingHub: Data download fail!")
+    print "Connection Error when downloading data!"
+    sys.exit(1)
+# Save file
+try:
+    last_time_tup = time.localtime(max_time)
+    last_name = 'szczecin_' + time.strftime('%d%m%y', last_time_tup)
+    file_name = "/home/mateusz/data/%s.jl" % last_name
+    out_data = codecs.open(file_name, 'w', "utf-8")
+    out_data.write(spider_data.text)
+    out_data.close()
+    syslog.syslog("ScrapingHub: file %s written succesfully :)" % file_name)
+except:
+    syslog.syslog("ScrapingHub: file writing failed")
+    
+# Drop old data and import new to MongoDB
