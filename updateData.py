@@ -19,7 +19,7 @@ PRJ = "50402"
 url_jobs = 'https://app.scrapinghub.com/api/jobs/list.json'
 url_data = 'https://storage.scrapinghub.com/items/'
 
-# TODO: Get the most recent job number
+# Get the most recent job number
 
 
 def getSpider(url, api, header='', **options):
@@ -70,6 +70,7 @@ except requests.HTTPError, ConnectionError:
     syslog.syslog("ScrapingHub: Data download fail!")
     print "Connection Error when downloading data!"
     sys.exit(1)
+
 # Save file
 try:
     last_time_tup = time.localtime(max_time)
@@ -81,11 +82,11 @@ try:
     syslog.syslog("ScrapingHub: file %s written succesfully :)" % file_name)
 except:
     syslog.syslog("ScrapingHub: file writing failed")
-    
+
 # Drop old data and import new to MongoDB
 import pymongo
 
-#setup the connection os.environ['OPENSHIFT_MONGODB_DB_URL'])
+# Setup the connection os.environ['OPENSHIFT_MONGODB_DB_URL'])
 try:
     syslog.syslog("ScrapingHub: Flushing MongoDB data for Szczecin")
     key = "mongodb://localhost:27017/test"
@@ -98,6 +99,7 @@ try:
 except:
     syslog.syslog("ScrapingHub: MongoDB flush fail!")
     sys.exit(1)
+
 # Populate the new DB
 syslog.syslog("ScrapingHub: Populate MongdDB with new data")
 pop = os.system("mongoimport -d python -c szczecin --type json %s" % file_name)
