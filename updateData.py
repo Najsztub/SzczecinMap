@@ -104,7 +104,7 @@ except:
 # Populate the new DB
 try:
     syslog.syslog("ScrapingHub: Populate MongdDB with new data")
-    os.system("mongoimport -d python -c szczecin --type json /home/mateusz/data/%s" % file_name)
+    os.system("mongoimport -d python -c szczecin --type json %s" % file_name)
 except:
     syslog.syslog("ScrapingHub: Populationg MongoDB filed")
     sys.exit(1)
