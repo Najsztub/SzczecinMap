@@ -104,5 +104,5 @@ except:
 syslog.syslog("ScrapingHub: Populate MongdDB with new data")
 pop = os.system("mongoimport -d python -c szczecin --type json %s" % file_name)
 if pop != 0:
-    syslog.syslog("ScrapingHub: Populationg MongoDB failed")
+    syslog.syslog("ScrapingHub: Populating MongoDB failed")
     sys.exit(1)
