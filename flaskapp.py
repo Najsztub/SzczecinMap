@@ -23,11 +23,11 @@ def mongo_data():
     key = "mongodb://localhost:27017/test"
     conn = pymongo.MongoClient(key)
     db = conn.python
-    
+
     # query the DB for all the coordinates
     coords = db.szczecin.find({'town': 'Szczecin',
-                               'data_lat': {'$gt': 0.0 , "$lt": 54.0 },
-                               'data_lon': {'$gt': 14.0 , '$lt': 15.0 } },
+                               'data_lat': {'$gt': 0.0, "$lt": 54.0},
+                               'data_lon': {'$gt': 14.0, '$lt': 15.0}},
                               {'data_lat': 1, 'data_lon': 1,
                                'price': 1, 'pow': 1, '_id': 1})
     # json_coords = [dumps(c) for c in coords]
@@ -65,5 +65,6 @@ def add_message():
     conn.close()
     return Response(dumps(items), mimetype='application/json')
 
+
 if __name__ == "__main__":
-    app.run(debug="False")
+    app.run(debug="True")

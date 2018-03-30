@@ -1,24 +1,11 @@
-#!/usr/bin/python
-import os
-
-virtenv = os.environ['OPENSHIFT_PYTHON_DIR'] + '/virtenv/'
-virtualenv = os.path.join(virtenv, 'bin/activate_this.py')
-try:
-    execfile(virtualenv, dict(__file__=virtualenv))
-except IOError:
-    pass
-#
-# IMPORTANT: Put any additional includes below this line.  If placed above this
-# line, it's possible required libraries won't be in your searchable path
-#
+#!/usr/bin/python3                                                              
+activate_this = '/var/opt/p3flask/bin/activate_this.py'
+with open(activate_this) as file_:
+    exec(file_.read(), dict(__file__=activate_this))
+import sys
+import logging
+logging.basicConfig(stream=sys.stderr)
+sys.path.insert(0,"/var/www/map/")
 
 from flaskapp import app as application
-
-#
-# Below for testing only
-#
-if __name__ == '__main__':
-    from wsgiref.simple_server import make_server
-    httpd = make_server('localhost', 8051, application)
-    # Wait for a single request, serve it and quit.
-    httpd.handle_request()
+application.secret_key = '\xfb!\x8eJ\xd3\xe9\x95$\x81\x7fin\xd2H\xfe\xef\x83,\xa9e\xfcD\x92\x19'

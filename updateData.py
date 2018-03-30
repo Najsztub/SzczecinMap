@@ -39,9 +39,9 @@ syslog.syslog("ScrapingHub: Getting jobs info")
 try:
     res_jobs = getSpider(url_jobs, API_key, project=PRJ, state='finished',
                          count=5)
-except requests.HTTPError, ConnectionError:
+except (requests.HTTPError, ConnectionError):
     syslog.syslog("ScrapingHub: Connection error for jobs info")
-    print "Connection Error!"
+    print("Connection Error!")
     sys.exit(1)
 json_job = res_jobs.json()
 # Find latest job
@@ -66,9 +66,9 @@ last_job_id = str(last_job['id'])
 syslog.syslog("ScrapingHub: downloading data for job %s" % last_job_id)
 try:
     spider_data = getSpider(url_data + last_job_id, API_key, format='jl')
-except requests.HTTPError, ConnectionError:
+except (requests.HTTPError, ConnectionError):
     syslog.syslog("ScrapingHub: Data download fail!")
-    print "Connection Error when downloading data!"
+    print("Connection Error when downloading data!")
     sys.exit(1)
 
 # Save file
