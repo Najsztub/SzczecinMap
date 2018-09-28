@@ -2,12 +2,12 @@
 //**********************************************************************************
 //********  LEAFLET HEXBIN LAYER CLASS *********************************************
 //**********************************************************************************
-L.HexbinLayer = L.Class.extend({
-	includes: L.Mixin.Events,
+L.HexbinLayer = L.Layer.extend({
+	includes: L.Evented.prototype,
 	initialize: function (rawData, options) {
 		this.levels = {};
 		this.layout = d3.hexbin().radius(10);
-		this.rscale = d3.scale.sqrt().range([0, 10]).clamp(true);
+		this.rscale = d3.scaleSqrt().range([0, 10]).clamp(true);
 		this.rwData = rawData;
 		this.config = options;
 	},
@@ -16,7 +16,7 @@ L.HexbinLayer = L.Class.extend({
 		return [point.x, point.y];
 	},
 	getBounds: function (d) {
-		var b = d3.geo.bounds(d)
+		var b = d3.geoBounds(d)
 		return L.bounds(this.project([b[0][0], b[1][1]]), this.project([b[1][0], b[0][1]]));
 	},
 	update: function () {
@@ -60,9 +60,9 @@ L.HexbinLayer = L.Class.extend({
 		that = this;
 		// that.rscale(d.length) <- goes into layout.hexagon() to scale
 		// hexagons according to size
-		hexagons.attr("d", function (d) { return that.layout.hexagon(); })
-			.attr("transform", function (d) { return "translate(" + d.x + "," + d.y + ")"; })
-			.on("mouseover", function (d) {
+		path.attr("d", function (d) { return that.layout.hexagon(); })
+			.attr("transform", function (d) { return "translate(" + d.x + "," + d.y + ")"; });
+		path.on("mouseover", function (d) {
 				var pr = 0, ar = 0, pr_sq = 0;
 				d.map(function (e) {
 					if (e.length === 3) {
@@ -76,7 +76,8 @@ L.HexbinLayer = L.Class.extend({
 					.style("visibility", "visible")
 					.style("top", function () { return (d3.event.pageY - 130) + "px"; })
 					.style("left", function () { return (d3.event.pageX - 130) + "px"; })
-			}).on("mouseout", function (d) { d3.select("#tooltip").style("visibility", "hidden") });
+			})
+			.on("mouseout", function (d) { d3.select("#tooltip").style("visibility", "hidden") });
 	},
 	addTo: function (map) {
 		map.addLayer(this);
@@ -110,20 +111,21 @@ var margin = { top: 20, right: 20, bottom: 30, left: 40 };
 w = w - margin.right - margin.left;
 h = h - margin.top - margin.bottom;
 // load the external data
-var myjson = "mongo/data";
-d3.json(myjson, function (error, coords) {
-	//console.log(dd);
+var mymap = L.map('mapid').setView([53.45, 14.57], 12);
+L.tileLayer('https://api.mapbox.com/styles/v1/mnajsztub/cinwvybx6002qbunmn2hafrtp/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibW5hanN6dHViIiwiYSI6ImNpbnd2dmxzbTAwcjR2c2tsNnBza2J2OWkifQ.3MQPtu81nKJ5aG1dkvfQag', {
+	attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+	maxZoom: 18
+}).addTo(mymap);
+
+
+d3.json("mongo/data").then(function (data) {addGeoData(data);});
+
+
+var	addGeoData = function (data) {
 	//Create SVG element
 
 	// Leaflet map
-	var cscale = d3.scale.linear().domain([0, 1]).range(["#00FF00", "#FFA500"]);
-	var mymap = L.map('mapid').setView([53.45, 14.57], 12);
-	L.tileLayer('https://api.mapbox.com/styles/v1/mnajsztub/cinwvybx6002qbunmn2hafrtp/tiles/{z}/{x}/{y}?access_token={accessToken}', {
-		attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
-		maxZoom: 18,
-		accessToken: 'pk.eyJ1IjoibW5hanN6dHViIiwiYSI6ImNpbnd2dmxzbTAwcjR2c2tsNnBza2J2OWkifQ.3MQPtu81nKJ5aG1dkvfQag'
-	}).addTo(mymap);
-
+	var cscale = d3.scaleLinear().domain([0, 1]).range(["#00FF00", "#FFA500"]);
 	function reformat(array) {
 		var data = [];
 		array.map(function (d) {
@@ -136,14 +138,14 @@ d3.json(myjson, function (error, coords) {
 				},
 				type: "Feature",
 				geometry: {
-					coordinates: [+d.data_lon, +d.data_lat],
+					coordinates: [d.data_lon, d.data_lat],
 					type: "Point"
 				}
 			});
 		});
 		return data;
 	}
-	var geoData = { type: "FeatureCollection", features: reformat(coords) };
+	var geoData = { type: "FeatureCollection", features: reformat(data) };
 	//**********************************************************************************
 	//********  ADD HEXBIN LAYER TO MAP AND DEFINE HEXBIN STYLE FUNCTION ***************
 	//**********************************************************************************
@@ -153,7 +155,7 @@ d3.json(myjson, function (error, coords) {
 		mouse: makeInfo,
 	});
 	// Change scale
-	hexLayer.rscale = d3.scale.sqrt().range([10, 10]).clamp(true);
+	hexLayer.rscale = d3.scaleSqrt().range([1, 10]).clamp(true);
 	//hexLayer.rscale = function() {return ;
 	hexLayer.addTo(mymap);
 
@@ -229,7 +231,7 @@ d3.json(myjson, function (error, coords) {
 
 	function hexbinStyle(hexagons) {
 
-		var color = d3.scale.linear()
+		var color = d3.scaleLinear()
 			.domain([3000, 4000, 7000])
 			.range(["blue", "yellow", "red"])
 			.interpolate(d3.interpolateLab);
@@ -283,4 +285,4 @@ d3.json(myjson, function (error, coords) {
 			})
 			.attr("transform", function (d, i) { return "translate(0," + i * 18 + ")"; });
 	}
-});
+}
