@@ -118,9 +118,10 @@ d3.json(myjson, function (error, coords) {
 	// Leaflet map
 	var cscale = d3.scale.linear().domain([0, 1]).range(["#00FF00", "#FFA500"]);
 	var mymap = L.map('mapid').setView([53.45, 14.57], 12);
-	L.tileLayer('https://api.mapbox.com/styles/v1/mnajsztub/cinwvybx6002qbunmn2hafrtp/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibW5hanN6dHViIiwiYSI6ImNpbnd2dmxzbTAwcjR2c2tsNnBza2J2OWkifQ.3MQPtu81nKJ5aG1dkvfQag', {
+	L.tileLayer('https://api.mapbox.com/styles/v1/mnajsztub/cinwvybx6002qbunmn2hafrtp/tiles/{z}/{x}/{y}?access_token={accessToken}', {
 		attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
-		maxZoom: 18
+		maxZoom: 18,
+		accessToken: 'pk.eyJ1IjoibW5hanN6dHViIiwiYSI6ImNpbnd2dmxzbTAwcjR2c2tsNnBza2J2OWkifQ.3MQPtu81nKJ5aG1dkvfQag'
 	}).addTo(mymap);
 
 	function reformat(array) {
