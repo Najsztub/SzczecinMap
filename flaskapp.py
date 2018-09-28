@@ -14,7 +14,7 @@ Compress(app)
 @app.route("/index")
 def mongo_map():
     # Just plot a html page
-    return render_template("mongo_leaf.html")
+    return render_template("index.html")
 
 
 @app.route("/mongo/data")
@@ -36,12 +36,6 @@ def mongo_data():
         dumps(coords),
         mimetype='application/json'
     )
-
-
-@app.route("/mongo/html")
-def mongo_html():
-    # Just plot a html page
-    return render_template("mongo_html.html")
 
 
 @app.route('/mongo/item', methods=['GET', 'POST'])
