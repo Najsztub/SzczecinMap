@@ -10,7 +10,7 @@ from psycopg2.extras import RealDictCursor
 
 app = Flask(__name__)
 # app.config.from_object(os.environ['APP_SETTINGS'])
-app.config.from_object("config.DevelopmentConfig")
+app.config.from_object("config.Config")
 Compress(app)
 
 conn = psycopg2.connect(app.config['SQLALCHEMY_DATABASE_URI'])
