@@ -63,20 +63,20 @@ L.HexbinLayer = L.Layer.extend({
 		path.attr("d", function (d) { return that.layout.hexagon(); })
 			.attr("transform", function (d) { return "translate(" + d.x + "," + d.y + ")"; });
 		path.on("mouseover", function (d) {
-				var pr = 0, ar = 0, pr_sq = 0;
-				d.map(function (e) {
-					if (e.length === 3) {
-						pr += e[2].price;
-						ar += e[2].area;
-						pr_sq += e[2].price_sq;
-					}
-				});
-				that.config.mouse.call(this, [d.length, pr / d.length, ar / d.length, pr_sq / d.length]);
-				d3.select("#tooltip")
-					.style("visibility", "visible")
-					.style("top", function () { return (d3.event.pageY - 130) + "px"; })
-					.style("left", function () { return (d3.event.pageX - 130) + "px"; })
-			})
+			var pr = 0, ar = 0, pr_sq = 0;
+			d.map(function (e) {
+				if (e.length === 3) {
+					pr += e[2].price;
+					ar += e[2].area;
+					pr_sq += e[2].price_sq;
+				}
+			});
+			that.config.mouse.call(this, [d.length, pr / d.length, ar / d.length, pr_sq / d.length]);
+			d3.select("#tooltip")
+				.style("visibility", "visible")
+				.style("top", function () { return (d3.event.pageY - 130) + "px"; })
+				.style("left", function () { return (d3.event.pageX - 130) + "px"; })
+		})
 			.on("mouseout", function (d) { d3.select("#tooltip").style("visibility", "hidden") });
 	},
 	addTo: function (map) {
@@ -95,7 +95,11 @@ L.HexbinLayer = L.Layer.extend({
 		}
 		map.on({ 'moveend': this.update }, this);
 		this.update();
-	}
+	},
+	onRemove: function () {
+		d3.select('#hex-svg').remove();
+	},
+	isHexLayer: true
 });
 
 L.hexbinLayer = function (data, styleFunction) {
@@ -117,12 +121,23 @@ L.tileLayer('https://api.mapbox.com/styles/v1/mnajsztub/cinwvybx6002qbunmn2hafrt
 	maxZoom: 18
 }).addTo(mymap);
 
+var plot_data = function (date) {
+	d3.json("/date/" + date).then(function (data) { addGeoData(data); });
+}
 
-d3.json("mongo/data").then(function (data) {addGeoData(data);});
+fetch("/dates").then(dates => dates.json()).then(dates => {
+	var max_date = dates[0]['$date'];
+	plot_data(max_date);
+});
 
 
-var	addGeoData = function (data) {
-	//Create SVG element
+var addGeoData = function (data) {
+	// Clear hexbin Layers
+	mymap.eachLayer(function (l) {
+		if (l.isHexLayer === true) {
+			l.remove();
+		}
+	});
 
 	// Leaflet map
 	var cscale = d3.scaleLinear().domain([0, 1]).range(["#00FF00", "#FFA500"]);
@@ -158,7 +173,6 @@ var	addGeoData = function (data) {
 	hexLayer.rscale = d3.scaleSqrt().range([1, 10]).clamp(true);
 	//hexLayer.rscale = function() {return ;
 	hexLayer.addTo(mymap);
-
 	function hexClicked(d) {
 		function linkMsg(dt) {
 			//console.log(dt);
@@ -286,3 +300,29 @@ var	addGeoData = function (data) {
 			.attr("transform", function (d, i) { return "translate(0," + i * 18 + ")"; });
 	}
 }
+
+window.onload = function () {
+	fetch('/dates').then(dates => dates.json()).then(dates => {
+		var newSelect = document.getElementById('data-dates');
+		index = 1;
+		for (element in dates) {
+			var opt = document.createElement("option");
+			var date = dates[element]['$date'];
+			opt.value = date;
+			var ts = new Date(date);
+			opt.innerHTML = ts.getDate() + '-' + ts.getMonth() + '-' + ts.getFullYear(); // whatever property it has
+			// then append it to the select element
+			newSelect.appendChild(opt);
+			index++;
+		}
+	});
+
+}
+
+function dateChange(selectObj) {
+	// get the index of the selected option 
+	var idx = selectObj.selectedIndex;
+	// get the value of the selected option 
+	var new_date = selectObj.options[idx].value;
+	plot_data(new_date);
+} 
