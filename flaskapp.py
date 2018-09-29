@@ -25,6 +25,11 @@ def about_page():
     # Just plot a html page
     return render_template("about.html")
 
+@app.route("/about_data")
+def about_data():
+    # Just plot a html page
+    return render_template("about_data.html")
+
 
 @app.route('/dates')
 def get_dates():
