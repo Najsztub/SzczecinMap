@@ -121,15 +121,46 @@ L.tileLayer('https://api.mapbox.com/styles/v1/mnajsztub/cinwvybx6002qbunmn2hafrt
 	maxZoom: 18
 }).addTo(mymap);
 
+
+var updateStistics = function(data, container){
+	var divStats = document.getElementById(container);
+	divStats.innerHTML = '';
+	var N = document.createElement("p");
+	N.innerHTML = "Liczba obserwacji: " + data.length;
+	divStats.appendChild(N);
+
+	var sums = data.reduce((acc, item) => {
+		return {price: acc.price + +item.price || 0, pow: acc.pow + +item.pow || 0} 
+	});
+	//means.price = means.price / data.length;
+	//means.pow = means.pos / data.length;
+
+	var m_price = document.createElement("p");
+	m_price.innerHTML = "Średnia cena:<br>" + (sums.price/data.length).toFixed(0) + ' zł';
+	divStats.appendChild(m_price);
+
+	var m_price_sq = document.createElement("p");
+	m_price_sq.innerHTML = "Średnia cena/m2:<br>" + (sums.price/sums.pow).toFixed(2) + ' zł/m2';
+	divStats.appendChild(m_price_sq);
+
+
+	var m_area = document.createElement("p");
+	m_area.innerHTML = "Średnia powierzchnia:<br>" + (sums.pow/data.length).toFixed(2) + ' m2';
+	divStats.appendChild(m_area);
+
+}
+
 var plot_data = function (date) {
-	d3.json("/date/" + date).then(function (data) { addGeoData(data); });
+	d3.json("/date/" + date).then(data => {
+		updateStistics(data, 'data-stats');
+		addGeoData(data); 
+	});
 }
 
 fetch("/dates").then(dates => dates.json()).then(dates => {
 	var max_date = dates[0]['$date'];
 	plot_data(max_date);
 });
-
 
 var addGeoData = function (data) {
 	// Clear hexbin Layers
