@@ -1,3 +1,4 @@
 {
-    "python.pythonPath": "/home/mateusz/.venv/tracker_env/bin/python"
+    "python.pythonPath": "/home/mateusz/.venv/tracker_env/bin/python",
+    "cSpell.enabled": false
 }

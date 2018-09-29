@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import pymongo
 from bson.json_util import dumps, ObjectId
 from flask import Flask, render_template, request, Response
 from flask_compress import Compress
