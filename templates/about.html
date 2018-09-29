@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="card mt-4">
+            <div class="card-header">
+                O stronie
+            </div>
+            <div class="card-body">
+                <p>
+                    Mapa powstała na podstawie ponad 8k ofert dla Szczecina pobranych z
+                    <a href="http://otodom.pl">otodom.pl</a> przy pomocy
+                    <a href="http://scrapy.readthedocs.io/en/latest/">Scrapy</a>.
+                    Kod do zaciągania danych i prostej analizy dostępny na
+                    <a href="https://github.com/Najsztub/SzczecinHome">GitHubie</a>.
+                </p>
+                <p>
+                    Mapa korzysta z <a href="https://jquery.com/">jQuery</a> i
+                    <a href="https://d3js.org/">D3.js</a>. Do tego używa
+                    <a href="http://leafletjs.com/">Leaflet</a> do rysowania map zaciąganych z
+                    <a href="https://www.mapbox.com/">Mapboxa</a>. Hexbin plot łączony jest z wykorzystaniem kodu
+                    opisanego
+                    <a href="http://www.delimited.io/blog/2013/12/1/hexbins-with-d3-and-leaflet-maps"> tutaj</a>.
+                </p>
+                <p>
+                    Całość śmiga na serwerze postawionym na
+                    <a href="https://www.digitalocean.com/">Digital Ocean</a> z wykorzystaniem Pythona i
+                    <a href="http://flask.pocoo.org/">Flask-a</a>.
+                    Strona korzysta z <a href="https://www.mongodb.com/">MongoDB</a> jako domyślnej bazy danych.
+                </p>
+                <p>
+                    Copyright © 2016, Mateusz Najsztub.
+                    Jak co, to pisać na: <span id="cinfo"></span>
+                </p>
+
+                <script>
+                    var name = "mateusz";
+                    var sname = "najsztub";
+                    var domain = "gmail.com";
+                    var fullcontact = name + '.' + sname + "@" + domain;
+                    var cinfo = document.getElementById('cinfo');
+                    cinfo.innerHTML = fullcontact;
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

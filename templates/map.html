@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block css %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css" integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
+    crossorigin="" />
+{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-9">
+            <div class="card mt-4">
+                <div class="card-header">Mapa Szczecina</div>
+                <div class="card-body">
+                    <div id="mapid"></div>
+                    <div id="tooltip">
+                        <svg width="200px" height="100px"></svg>
+                    </div>
+                    <div id="tooltip-text">
+                        <svg width="300px" height="120px"></svg>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-lg-3">
+            <div class="card mt-4">
+                <div class="card-header">Panel sterowania</div>
+                <div class="card-body">
+                    <p>wybór daty</p>
+                    <hr>
+                    <p>wybór zmiennej</p>
+                    <hr>
+                    <p>wybór kolorów</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block js %}
+<script src="https://d3js.org/d3.v5.js"></script>
+<script src="https://d3js.org/d3-hexbin.v0.2.min.js"></script>
+<!-- Make sure you put this AFTER Leaflet's CSS -->
+<script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet-src.js" integrity="sha512-+ZaXMZ7sjFMiCigvm8WjllFy6g3aou3+GZngAtugLzrmPFKFK7yjSri0XnElvCTu/PrifAYQuxZTybAEkA8VOA=="
+    crossorigin=""></script>
+<!-- <script src="https://rawgit.com/Asymmetrik/leaflet-d3/master/dist/leaflet-d3.js" charset="utf-8"></script> -->
+<script type="text/javascript" src="/static/js/map.js"></script>
+{% endblock %}

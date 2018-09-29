@@ -14,7 +14,13 @@ Compress(app)
 @app.route("/index")
 def mongo_map():
     # Just plot a html page
-    return render_template("index.html")
+    return render_template("map.html")
+
+
+@app.route("/about")
+def about_page():
+    # Just plot a html page
+    return render_template("about.html")
 
 
 @app.route("/mongo/data")
