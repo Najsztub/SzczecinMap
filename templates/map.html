@@ -9,7 +9,7 @@
         <div class="col-lg-9">
             <div class="card mt-4">
                 <div class="card-header">Mapa Szczecina</div>
-                <div class="card-body">
+                <div class="card-body" style="padding: 0;">
                     <div id="mapid"></div>
                     <div id="tooltip">
                         <svg width="200px" height="100px"></svg>
@@ -25,13 +25,19 @@
             <div class="card mt-4">
                 <div class="card-header">Panel sterowania</div>
                 <div class="card-body">
-                    <p>Wybór daty:</p>
+                    <label>Wybór daty:</label>
                     <select class="form-control" id="data-dates" onchange="dateChange(this);">
                       </select>
                     <hr>
-                    <p>wybór zmiennej</p>
-                    <hr>
-                    <p>wybór kolorów</p>
+                    <label>Wybór zmiennej:</label>
+                    <select class="form-control" id="data-vars" onchange="varChange(this);">
+                        <option value="mean_price_sqm" selected="selected">Średnia cena za m²</option>
+                        <option value="mean_price">Średnia cena</option>
+                        <option value="mean_pow">Średnia powierzchnia</option>
+                        <option value="N">Liczba obserwacji</option>
+                    </select>
+                    <label>Legenda:</label>
+                    <svg id="legend-svg"></svg>
                 </div>
             </div>
             <div class="card mt-4">

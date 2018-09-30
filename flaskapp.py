@@ -25,6 +25,7 @@ def about_page():
     # Just plot a html page
     return render_template("about.html")
 
+
 @app.route("/about_data")
 def about_data():
     # Just plot a html page
@@ -56,10 +57,15 @@ def get_date(date):
         on a.id = d.add_id
             where d.date = to_timestamp(%s)::date;
     """
-    cur.execute(query, (date/1e3,))
-    data = cur.fetchall() # [ d[0] for d in cur.fetchall()]
-    conn.close ()
-    return Response(dumps(data), mimetype='application/json')
+    try:
+        cur.execute(query, (date/1e3,))
+        data = cur.fetchall() # [ d[0] for d in cur.fetchall()]
+        conn.close ()
+        return Response(dumps(data), mimetype='application/json')
+    except Exception as e:
+        conn.close()
+        print(e)
+        return 500
 
 
 if __name__ == "__main__":
