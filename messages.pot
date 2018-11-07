@@ -1,0 +1,135 @@
+# Translations template for PROJECT.
+# Copyright (C) 2018 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2018.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2018-11-07 18:51+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.6.0\n"
+
+#: templates/about.html:7 templates/base.html:32
+msgid "O stronie"
+msgstr ""
+
+#: templates/about.html:11
+msgid "Mapa powstała na podstawie ponad 8k ofert dla Szczecina pobranych z"
+msgstr ""
+
+#: templates/about.html:12
+msgid "przy pomocy"
+msgstr ""
+
+#: templates/about.html:14
+msgid "Kod do zaciągania danych i prostej analizy dostępny na"
+msgstr ""
+
+#: templates/about.html:18
+msgid "Mapa korzysta z"
+msgstr ""
+
+#: templates/about.html:18
+msgid "i"
+msgstr ""
+
+#: templates/about.html:19
+msgid "Do tego używa"
+msgstr ""
+
+#: templates/about.html:20
+msgid "do rysowania map zaciąganych z"
+msgstr ""
+
+#: templates/about.html:21
+msgid "Hexbin plot łączony jest z wykorzystaniem kodu opisanego"
+msgstr ""
+
+#: templates/about.html:22
+msgid "tutaj"
+msgstr ""
+
+#: templates/about.html:25
+msgid "Całość śmiga na serwerze postawionym na"
+msgstr ""
+
+#: templates/about.html:26
+msgid "z wykorzystaniem Pythona i"
+msgstr ""
+
+#: templates/about.html:28
+msgid "Strona korzysta z PostgreSQL jako domyślnej bazy danych."
+msgstr ""
+
+#: templates/about.html:29
+msgid "W przyszłości zamierzam rozszerzyć analizy o PostGIS."
+msgstr ""
+
+#: templates/about.html:33
+msgid "Jak co, to pisać na"
+msgstr ""
+
+#: templates/about_data.html:7 templates/base.html:29
+msgid "O danych"
+msgstr ""
+
+#: templates/about_data.html:11
+msgid "Wstępna analiza danych dostępna na"
+msgstr ""
+
+#: templates/about_data.html:11
+msgid "moim prywatnym blogu"
+msgstr ""
+
+#: templates/map.html:11
+msgid "Mapa Szczecina"
+msgstr ""
+
+#: templates/map.html:26
+msgid "Panel sterowania"
+msgstr ""
+
+#: templates/map.html:28
+msgid "Wybór daty"
+msgstr ""
+
+#: templates/map.html:32
+msgid "Wybór zmiennej"
+msgstr ""
+
+#: templates/map.html:34
+msgid "Średnia cena za m²"
+msgstr ""
+
+#: templates/map.html:35 templates/map.html:62
+msgid "Średnia cena"
+msgstr ""
+
+#: templates/map.html:36 templates/map.html:64
+msgid "Średnia powierzchnia"
+msgstr ""
+
+#: templates/map.html:37 templates/map.html:61
+msgid "Liczba obserwacji"
+msgstr ""
+
+#: templates/map.html:39
+msgid "Legenda:"
+msgstr ""
+
+#: templates/map.html:44
+msgid "Podsumowanie"
+msgstr ""
+
+#: templates/map.html:63
+msgid "Średnia cena/m²"
+msgstr ""
+

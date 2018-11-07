@@ -8,7 +8,7 @@
     <div class="row">
         <div class="col-lg-9">
             <div class="card mt-4">
-                <div class="card-header">Mapa Szczecina</div>
+                <div class="card-header">{{ _('Mapa Szczecina') }}</div>
                 <div class="card-body" style="padding: 0;">
                     <div id="mapid"></div>
                     <div id="tooltip">
@@ -23,25 +23,25 @@
         </div>
         <div class="col-lg-3">
             <div class="card mt-4">
-                <div class="card-header">Panel sterowania</div>
+                <div class="card-header">{{ _('Panel sterowania') }}</div>
                 <div class="card-body">
-                    <label>Wybór daty:</label>
+                    <label>{{ _('Wybór daty') }}:</label>
                     <select class="form-control" id="data-dates" onchange="dateChange(this);">
                       </select>
                     <hr>
-                    <label>Wybór zmiennej:</label>
+                    <label>{{ _('Wybór zmiennej') }}:</label>
                     <select class="form-control" id="data-vars" onchange="varChange(this);">
-                        <option value="mean_price_sqm" selected="selected">Średnia cena za m²</option>
-                        <option value="mean_price">Średnia cena</option>
-                        <option value="mean_pow">Średnia powierzchnia</option>
-                        <option value="N">Liczba obserwacji</option>
+                        <option value="mean_price_sqm" selected="selected">{{ _('Średnia cena za m²')}}</option>
+                        <option value="mean_price">{{ _('Średnia cena')}}</option>
+                        <option value="mean_pow">{{ _('Średnia powierzchnia')}}</option>
+                        <option value="N">{{ _('Liczba obserwacji')}}</option>
                     </select>
-                    <label>Legenda:</label>
+                    <label>{{ _('Legenda:')}}</label>
                     <svg id="legend-svg"></svg>
                 </div>
             </div>
             <div class="card mt-4">
-                <div class="card-header">Podsumowanie</div>
+                <div class="card-header">{{ _('Podsumowanie')}}</div>
                 <div class="card-body" id="data-stats">
                 </div>
             </div>
@@ -56,5 +56,13 @@
 <script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet-src.js" integrity="sha512-+ZaXMZ7sjFMiCigvm8WjllFy6g3aou3+GZngAtugLzrmPFKFK7yjSri0XnElvCTu/PrifAYQuxZTybAEkA8VOA=="
     crossorigin=""></script>
 <!-- <script src="https://rawgit.com/Asymmetrik/leaflet-d3/master/dist/leaflet-d3.js" charset="utf-8"></script> -->
+<script type="text/javascript">
+lang = {
+    nobs: "{{ _('Liczba obserwacji')}}",
+    avg_price: "{{ _('Średnia cena')}}",
+    avg_mprice: "{{ _('Średnia cena/m²')}}",
+    avg_area: "{{ _('Średnia powierzchnia')}}"
+}
+</script>
 <script type="text/javascript" src="/static/js/map.js"></script>
 {% endblock %}

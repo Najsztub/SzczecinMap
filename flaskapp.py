@@ -3,6 +3,7 @@
 from bson.json_util import dumps, ObjectId
 from flask import Flask, render_template, request, Response
 from flask_compress import Compress
+from flask_babel import Babel
 import psycopg2
 from psycopg2.extras import RealDictCursor
 
@@ -11,6 +12,14 @@ app = Flask(__name__)
 # app.config.from_object(os.environ['APP_SETTINGS'])
 app.config.from_object("config.Config")
 Compress(app)
+
+# Initialize Babel
+babel = Babel(app)
+
+@babel.localeselector
+def get_locale():
+    return request.accept_languages.best_match(app.config['LANGUAGES'].keys())
+
 
 # Create our index or root / route
 @app.route("/")

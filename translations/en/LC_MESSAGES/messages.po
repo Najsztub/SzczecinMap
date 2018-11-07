@@ -1,0 +1,136 @@
+# English translations for PROJECT.
+# Copyright (C) 2018 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2018.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2018-11-07 18:51+0100\n"
+"PO-Revision-Date: 2018-11-07 18:21+0100\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: en\n"
+"Language-Team: en <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.6.0\n"
+
+#: templates/about.html:7 templates/base.html:32
+msgid "O stronie"
+msgstr "About this site"
+
+#: templates/about.html:11
+msgid "Mapa powstała na podstawie ponad 8k ofert dla Szczecina pobranych z"
+msgstr "The map was made based on 8k offers from Szczecin scraped from"
+
+#: templates/about.html:12
+msgid "przy pomocy"
+msgstr "using"
+
+#: templates/about.html:14
+msgid "Kod do zaciągania danych i prostej analizy dostępny na"
+msgstr "The code for scraping and simple analysis is avaliable on"
+
+#: templates/about.html:18
+msgid "Mapa korzysta z"
+msgstr "Map uses"
+
+#: templates/about.html:18
+msgid "i"
+msgstr "and"
+
+#: templates/about.html:19
+msgid "Do tego używa"
+msgstr "Additionally it uses"
+
+#: templates/about.html:20
+msgid "do rysowania map zaciąganych z"
+msgstr "to draw maps from"
+
+#: templates/about.html:21
+msgid "Hexbin plot łączony jest z wykorzystaniem kodu opisanego"
+msgstr "Hexbin plot is merged using the code described"
+
+#: templates/about.html:22
+msgid "tutaj"
+msgstr "here"
+
+#: templates/about.html:25
+msgid "Całość śmiga na serwerze postawionym na"
+msgstr "The whole site resides on server on"
+
+#: templates/about.html:26
+msgid "z wykorzystaniem Pythona i"
+msgstr "using Python and"
+
+#: templates/about.html:28
+msgid "Strona korzysta z PostgreSQL jako domyślnej bazy danych."
+msgstr "The site uses PostgreSQL as default database."
+
+#: templates/about.html:29
+msgid "W przyszłości zamierzam rozszerzyć analizy o PostGIS."
+msgstr "In the future I wish to extend the analysis using PostGIS."
+
+#: templates/about.html:33
+msgid "Jak co, to pisać na"
+msgstr "You can write me at"
+
+#: templates/about_data.html:7 templates/base.html:29
+msgid "O danych"
+msgstr "About the data"
+
+#: templates/about_data.html:11
+msgid "Wstępna analiza danych dostępna na"
+msgstr "Preliminary data analysis availble at"
+
+#: templates/about_data.html:11
+msgid "moim prywatnym blogu"
+msgstr "my personal website"
+
+#: templates/map.html:11
+msgid "Mapa Szczecina"
+msgstr "Map of Szczecin"
+
+#: templates/map.html:26
+msgid "Panel sterowania"
+msgstr "Controls"
+
+#: templates/map.html:28
+msgid "Wybór daty"
+msgstr "Date selection"
+
+#: templates/map.html:32
+msgid "Wybór zmiennej"
+msgstr "Variable selection"
+
+#: templates/map.html:34
+msgid "Średnia cena za m²"
+msgstr "Average price per m²"
+
+#: templates/map.html:35 templates/map.html:62
+msgid "Średnia cena"
+msgstr "Average price"
+
+#: templates/map.html:36 templates/map.html:64
+msgid "Średnia powierzchnia"
+msgstr "Average area"
+
+#: templates/map.html:37 templates/map.html:61
+msgid "Liczba obserwacji"
+msgstr "Number of obs."
+
+#: templates/map.html:39
+msgid "Legenda:"
+msgstr "Legend:"
+
+#: templates/map.html:44
+msgid "Podsumowanie"
+msgstr "Summary"
+
+#: templates/map.html:63
+msgid "Średnia cena/m²"
+msgstr "Average price/m"
+

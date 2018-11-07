@@ -128,7 +128,7 @@ var updateStistics = function (data, container) {
 	var divStats = document.getElementById(container);
 	divStats.innerHTML = '';
 	var N = document.createElement("p");
-	N.innerHTML = "Liczba obserwacji: " + data.length;
+	N.innerHTML = lang.nobs + ': ' + data.length;
 	divStats.appendChild(N);
 
 	var sums = data.reduce((acc, item) => {
@@ -138,16 +138,16 @@ var updateStistics = function (data, container) {
 	//means.pow = means.pos / data.length;
 
 	var m_price = document.createElement("p");
-	m_price.innerHTML = "Średnia cena:<br>" + (sums.price / data.length).toFixed(0) + ' zł';
+	m_price.innerHTML = lang.avg_price + ":<br>" + (sums.price / data.length).toFixed(0) + ' zł';
 	divStats.appendChild(m_price);
 
 	var m_price_sq = document.createElement("p");
-	m_price_sq.innerHTML = "Średnia cena/m²:<br>" + (sums.price / sums.pow).toFixed(2) + ' zł/m²';
+	m_price_sq.innerHTML = lang.avg_mprice + ":<br>" + (sums.price / sums.pow).toFixed(2) + ' zł/m²';
 	divStats.appendChild(m_price_sq);
 
 
 	var m_area = document.createElement("p");
-	m_area.innerHTML = "Średnia powierzchnia:<br>" + (sums.pow / data.length).toFixed(2) + ' m²';
+	m_area.innerHTML = lang.avg_area + ":<br>" + (sums.pow / data.length).toFixed(2) + ' m²';
 	divStats.appendChild(m_area);
 
 }
