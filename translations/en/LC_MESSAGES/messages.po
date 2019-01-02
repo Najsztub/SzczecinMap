@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-01-02 13:17+0100\n"
+"POT-Creation-Date: 2019-01-02 13:20+0100\n"
 "PO-Revision-Date: 2018-11-07 18:21+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -91,8 +91,12 @@ msgid "moim prywatnym blogu"
 msgstr "my personal website"
 
 #: templates/about_data.html:14
-msgid "Rozszerzenie z wykorzystaniem uczenia maszynowego: "
-msgstr "Extended analysis using Machine Learning: "
+msgid "Rozszerzenie z wykorzystaniem uczenia maszynowego"
+msgstr "Extended analysis with Machine Learning avaliable"
+
+#: templates/about_data.html:14
+msgid "w kolejnym wpisie"
+msgstr "in next entry"
 
 #: templates/map.html:11
 msgid "Mapa Szczecina"
@@ -137,4 +141,7 @@ msgstr "Summary"
 #: templates/map.html:63
 msgid "Średnia cena/m²"
 msgstr "Average price/m"
+
+#~ msgid "Rozszerzenie z wykorzystaniem uczenia maszynowego: "
+#~ msgstr "Extended analysis using Machine Learning: "
 

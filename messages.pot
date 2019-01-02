@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-01-02 13:17+0100\n"
+"POT-Creation-Date: 2019-01-02 13:20+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -90,7 +90,11 @@ msgid "moim prywatnym blogu"
 msgstr ""
 
 #: templates/about_data.html:14
-msgid "Rozszerzenie z wykorzystaniem uczenia maszynowego: "
+msgid "Rozszerzenie z wykorzystaniem uczenia maszynowego"
+msgstr ""
+
+#: templates/about_data.html:14
+msgid "w kolejnym wpisie"
 msgstr ""
 
 #: templates/map.html:11
