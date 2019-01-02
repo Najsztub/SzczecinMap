@@ -1,14 +1,14 @@
 # Translations template for PROJECT.
-# Copyright (C) 2018 ORGANIZATION
+# Copyright (C) 2019 ORGANIZATION
 # This file is distributed under the same license as the PROJECT project.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2018.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2019.
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-11-07 18:51+0100\n"
+"POT-Creation-Date: 2019-01-02 13:17+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -87,6 +87,10 @@ msgstr ""
 
 #: templates/about_data.html:11
 msgid "moim prywatnym blogu"
+msgstr ""
+
+#: templates/about_data.html:14
+msgid "Rozszerzenie z wykorzystaniem uczenia maszynowego: "
 msgstr ""
 
 #: templates/map.html:11
